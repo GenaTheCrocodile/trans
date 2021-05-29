@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+from urllib.parse import quote
+from os.path import basename
+from urllib import request
+from json import loads
+from sys import argv
+
+languages = {
+    "af": "afrikaans",
+    "sq": "albanian",
+    "am": "amharic",
+    "ar": "arabic",
+    "hy": "armenian",
+    "az": "azerbaijani",
+    "eu": "basque",
+    "be": "belarusian",
+    "bn": "bengali",
+    "bs": "bosnian",
+    "bg": "bulgarian",
+    "ca": "catalan",
+    "ceb": "cebuano",
+    "ny": "chichewa",
+    "zh-cn": "chinese (simplified)",
+    "zh-tw": "chinese (traditional)",
+    "co": "corsican",
+    "hr": "croatian",
+    "cs": "czech",
+    "da": "danish",
+    "nl": "dutch",
+    "en": "english",
+    "eo": "esperanto",
+    "et": "estonian",
+    "tl": "filipino",
+    "fi": "finnish",
+    "fr": "french",
+    "fy": "frisian",
+    "gl": "galician",
+    "ka": "georgian",
+    "de": "german",
+    "el": "greek",
+    "gu": "gujarati",
+    "ht": "haitian creole",
+    "ha": "hausa",
+    "haw": "hawaiian",
+    "iw": "hebrew",
+    "hi": "hindi",
+    "hmn": "hmong",
+    "hu": "hungarian",
+    "is": "icelandic",
+    "ig": "igbo",
+    "id": "indonesian",
+    "ga": "irish",
+    "it": "italian",
+    "ja": "japanese",
+    "jw": "javanese",
+    "kn": "kannada",
+    "kk": "kazakh",
+    "km": "khmer",
+    "ko": "korean",
+    "ku": "kurdish (kurmanji)",
+    "ky": "kyrgyz",
+    "lo": "lao",
+    "la": "latin",
+    "lv": "latvian",
+    "lt": "lithuanian",
+    "lb": "luxembourgish",
+    "mk": "macedonian",
+    "mg": "malagasy",
+    "ms": "malay",
+    "ml": "malayalam",
+    "mt": "maltese",
+    "mi": "maori",
+    "mr": "marathi",
+    "mn": "mongolian",
+    "my": "myanmar (burmese)",
+    "ne": "nepali",
+    "no": "norwegian",
+    "ps": "pashto",
+    "fa": "persian",
+    "pl": "polish",
+    "pt": "portuguese",
+    "pa": "punjabi",
+    "ro": "romanian",
+    "ru": "russian",
+    "sm": "samoan",
+    "gd": "scots gaelic",
+    "sr": "serbian",
+    "st": "sesotho",
+    "sn": "shona",
+    "sd": "sindhi",
+    "si": "sinhala",
+    "sk": "slovak",
+    "sl": "slovenian",
+    "so": "somali",
+    "es": "spanish",
+    "su": "sundanese",
+    "sw": "swahili",
+    "sv": "swedish",
+    "tg": "tajik",
+    "ta": "tamil",
+    "te": "telugu",
+    "th": "thai",
+    "tr": "turkish",
+    "uk": "ukrainian",
+    "ur": "urdu",
+    "uz": "uzbek",
+    "vi": "vietnamese",
+    "cy": "welsh",
+    "xh": "xhosa",
+    "yi": "yiddish",
+    "yo": "yoruba",
+    "zu": "zulu",
+    "fil": "Filipino",
+    "he": "Hebrew",
+}
+
+
+def parse(argv):
+
+    if len(argv) < 3:
+        exit(f'Usage: {basename(argv[0])} <target-lang> <text>')
+
+    tl, q = argv[1], argv[2]
+
+    if not tl in languages:
+        print('Error: invalid language code\nCodes:')
+        for code, lang in languages.items():
+            print(f'  {code} - {lang}')
+        exit('')
+
+    return tl, q
+
+
+if __name__ == '__main__':
+
+    tl, q = parse(argv)
+
+    try:
+        text_json = request.urlopen(f'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={tl}&dt=t&q={quote(q)}').read()
+    except:
+        exit('Error: unknown error occurred while sending the Request. Maybe the amount of the text is too big.')
+
+    text = loads(text_json)[0]
+    for phrase in text:
+        # if phrase is None:
+        #     break
+        print(phrase[0], flush=True, end='')
+    print()
