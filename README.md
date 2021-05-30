@@ -4,7 +4,7 @@ Trans is a dependency-free CLI for Google Translate
 
 ## Usage
 
-```bash
+```
 usage: trans [-h] [-sl SL] [-l] text tl
 
 positional arguments:
