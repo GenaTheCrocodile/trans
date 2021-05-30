@@ -3,7 +3,7 @@ from urllib.parse import quote
 from os.path import basename
 from urllib import request
 from json import loads
-from sys import argv
+import argparse
 
 languages = {
     "af": "afrikaans",
@@ -115,34 +115,48 @@ languages = {
 }
 
 
-def parse(argv):
+def error(text):
+    exit(f'{basename(__file__)}: error: {text}')
 
-    if len(argv) < 3:
-        exit(f'Usage: {basename(argv[0])} <target-lang> <text>')
 
-    tl, q = argv[1], argv[2]
+def showcodes():
+    for code, lang in languages.items():
+        print(f'{code} - {lang}')
+    exit()
 
-    if not tl in languages:
-        print('Error: invalid language code\nCodes:')
-        for code, lang in languages.items():
-            print(f'  {code} - {lang}')
-        exit('')
 
-    return tl, q
+def parse():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('text', help='source text / word')
+    parser.add_argument('tl', help='translation language')
+    parser.add_argument('-sl', help='source language (auto by default)', default='auto')
+    parser.add_argument('-l', '--list-codes', help='list all language codes', action="store_true", dest='list')
+    args = parser.parse_args()
+
+    if args.list:
+        showcodes()
+
+    if not args.sl in languages and args.sl != 'auto':
+        error('invalid language code')
+            
+    if not args.tl in languages:
+        error('invalid language code')
+
+    return args.tl, args.sl, args.text
 
 
 if __name__ == '__main__':
 
-    tl, q = parse(argv)
+    tl, sl, q = parse()
 
     try:
-        text_json = request.urlopen(f'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={tl}&dt=t&q={quote(q)}').read()
+        text_json = request.urlopen(f'https://translate.googleapis.com/translate_a/single?client=gtx&sl={sl}&tl={tl}&dt=t&q={quote(q)}').read()
     except:
-        exit('Error: unknown error occurred while sending the Request. Maybe the amount of the text is too big.')
+        error('unknown error occurred while sending the Request. Maybe the amount of the text is too big.')
 
     text = loads(text_json)[0]
+
     for phrase in text:
-        # if phrase is None:
-        #     break
         print(phrase[0], flush=True, end='')
     print()
