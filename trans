@@ -3,6 +3,7 @@ from urllib.parse import quote
 from os.path import basename
 from urllib import request
 from json import loads
+from sys import argv
 import argparse
 
 languages = {
@@ -131,11 +132,12 @@ def parse():
     parser.add_argument('text', help='source text / word')
     parser.add_argument('tl', help='translation language')
     parser.add_argument('-sl', help='source language (auto by default)', default='auto')
-    parser.add_argument('-l', '--list-codes', help='list all language codes', action="store_true", dest='list')
-    args = parser.parse_args()
-
-    if args.list:
+    parser.add_argument('-l', '--list-codes', help='list all language codes', action='store_true')
+    
+    if '-l' in argv or '--list-codes' in argv: # Idk any other way to make it work
         showcodes()
+
+    args = parser.parse_args()
 
     if not args.sl in languages and args.sl != 'auto':
         error('invalid language code')
