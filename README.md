@@ -2,6 +2,15 @@
 
 Trans is a dependency-free CLI for Google Translate
 
+## Installation
+```bash
+git clone https://github.com/GenaTheCrocodile/trans.git
+cd trans
+chmod +x trans
+./trans "Hello World" es
+```
+You need to have the [Python](https://www.python.org/) interpreter installed on your system
+
 ## Usage
 
 ```
