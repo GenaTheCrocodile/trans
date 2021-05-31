@@ -17,7 +17,7 @@ You need to have the [Python](https://www.python.org/) interpreter installed on 
 usage: trans [-h] [-sl SL] [-l] text tl
 
 positional arguments:
-  text              source text / word
+  text              source text / word or a text file
   tl                translation language
 
 optional arguments:
