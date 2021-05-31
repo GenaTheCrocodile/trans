@@ -38,6 +38,11 @@ af - afrikaans
 sq - albanian
 am - amharic
 ...
+
+$ cat a.txt
+Hello, World!
+$ trans a.txt es
+¡Hola Mundo!
 ```
 
 ## License
