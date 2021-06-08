@@ -129,8 +129,8 @@ def showcodes():
 def parse():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('text', help='source text / word or a text file')
     parser.add_argument('tl', help='translation language')
+    parser.add_argument('text', help='source text / word or a text file')
     parser.add_argument('-sl', help='source language (auto by default)', default='auto')
     parser.add_argument('-l', '--list-codes', help='list all language codes', action='store_true')
     
