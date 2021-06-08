@@ -14,11 +14,11 @@ You need to have the [Python](https://www.python.org/) interpreter installed on 
 ## Usage
 
 ```
-usage: trans [-h] [-sl SL] [-l] text tl
+usage: trans [-h] [-sl SL] [-l] tl text
 
 positional arguments:
-  text              source text / word or a text file
   tl                translation language
+  text              source text / word or a text file
 
 optional arguments:
   -h, --help        show this help message and exit
@@ -27,10 +27,10 @@ optional arguments:
 ```
 ## Usage example
 ```bash
-$ trans "Hello, World!" es
+$ trans es "Hello, World!"
 ¡Hola Mundo!
 
-$ trans "Hello, World!" es -sl en # Set the source language manually 
+$ trans es "Hello, World!" -sl en # Set the source language manually 
 ¡Hola Mundo!
 
 $ trans -l
@@ -41,7 +41,7 @@ am - amharic
 
 $ cat a.txt
 Hello, World!
-$ trans a.txt es
+$ trans es a.txt
 ¡Hola Mundo!
 ```
 
