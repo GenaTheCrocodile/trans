@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from os.path import basename, isfile
+from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib import request
 from json import loads
@@ -133,13 +134,13 @@ def parse():
     parser.add_argument('text', help='source text / word or a text file')
     parser.add_argument('-sl', help='source language (auto by default)', default='auto')
     parser.add_argument('-l', '--list-codes', help='list all language codes', action='store_true')
-    
-    if '-l' in argv or '--list-codes' in argv: # Idk any other way to make it work
+
+    if '-l' in argv or '--list-codes' in argv:  # Idk any other way to make it work
         showcodes()
 
     args = parser.parse_args()
 
-    if (not args.sl in languages and args.sl != 'auto') or (not args.tl in languages):
+    if (args.sl not in languages and args.sl != 'auto') or (args.tl not in languages):
         error('invalid language code')
 
     if isfile(args.text):
@@ -155,8 +156,11 @@ if __name__ == '__main__':
 
     try:
         text_json = request.urlopen(f'https://translate.googleapis.com/translate_a/single?client=gtx&sl={sl}&tl={tl}&dt=t&q={quote(q)}').read()
-    except:
-        error('unknown error occurred while sending the Request. Maybe the amount of the text is too big.')
+    except HTTPError as Err:
+        if Err.code == 400:
+            error('bad request, maybe your text is too long')
+        else:
+            error(repr(Err))
 
     text = loads(text_json)[0]
 
