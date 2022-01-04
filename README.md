@@ -3,7 +3,7 @@
 Trans is a dependency-free CLI for Google Translate
 
 ## Installation
-```bash
+```console
 $ git clone https://github.com/GenaTheCrocodile/trans.git
 $ cd trans
 $ chmod +x trans
@@ -14,7 +14,7 @@ You need to have the [Python](https://www.python.org/) interpreter installed on 
 
 ## Usage
 
-```
+```console
 usage: trans [-h] [-sl SL] [-l] tl text
 
 positional arguments:
@@ -27,7 +27,7 @@ optional arguments:
   -l, --list-codes  list all language codes
 ```
 ## Usage example
-```bash
+```console
 $ trans es "Hello, World!"
 ¡Hola Mundo!
 
